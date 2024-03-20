@@ -1,25 +1,25 @@
-import 'dart:developer';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:weatherapp/models/weather_model.dart';
-import 'package:weatherapp/services/weather_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weatherapp/cubits/%20get%20weather%20cubit/get_weather_cubit.dart';
+
 
 class SearchView extends StatelessWidget {
-  const SearchView({super.key});
+  const SearchView({super.key,});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Search a city"),),
+      appBar: AppBar(title: const Text("Search a city"),),
 
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Center(
           child: TextField(
-            onSubmitted: (value) async {
-              weatherModel = await WeatherService(Dio())
-                  .getCurrentWeather(cityName: value);
+            onSubmitted: (value)  {
+           var getWeatherCubit =  BlocProvider.of<GetWeatherCubit>(context);
+           getWeatherCubit.getWeather(cityName: value);
+
               Navigator.of(context).pop();
             },
             decoration: const InputDecoration(
@@ -38,4 +38,4 @@ class SearchView extends StatelessWidget {
   }
 }
 
-WeatherModel? weatherModel;
+
